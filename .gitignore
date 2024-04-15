@@ -1,4 +1,4 @@
 .env
-.sqlite3
+chroma.sqlite3
 .csv
 .txt
