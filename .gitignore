@@ -2,4 +2,4 @@
 chroma.sqlite3
 .csv
 .txt
-exploratory_notebooks/chroma_db
+chroma_db/

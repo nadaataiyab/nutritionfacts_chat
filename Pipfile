@@ -17,6 +17,7 @@ langchain-openai = "*"
 chromadb = "*"
 langchainhub = "*"
 gradio = "*"
+langchain-community = "*"
 
 [dev-packages]
 
