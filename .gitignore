@@ -1,1 +1,4 @@
 .env
+.sqlite3
+.csv
+.txt
