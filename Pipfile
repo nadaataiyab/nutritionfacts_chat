@@ -1,0 +1,24 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+ipykernel = "*"
+jupyter = "*"
+pandas = "*"
+google-api-python-client = "*"
+youtube-transcript-api = "*"
+openai = "*"
+langchain = "*"
+python-dotenv = "*"
+matplotlib = "*"
+langchain-openai = "*"
+chromadb = "*"
+langchainhub = "*"
+gradio = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.12"
