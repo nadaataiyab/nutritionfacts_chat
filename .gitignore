@@ -3,3 +3,5 @@ chroma.sqlite3
 .csv
 .txt
 chroma_db/
+exploratory_notebooks/
+exploratory_files/

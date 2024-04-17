@@ -2,10 +2,10 @@ import os
 import gradio as gr
 
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from langchain.vectorstores import Chroma
+from langchain_community.vectorstores import Chroma
 from langchain_core.output_parsers import StrOutputParser
 from langchain import hub
-from langchain_core.runnables import RunnablePassthrough
+from langchain_core.runnables import RunnablePassthrough, RunnableParallel
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -16,9 +16,9 @@ embeddings_model = OpenAIEmbeddings(api_key=OPENAI_APIKEY, model='text-embedding
 # Instantiate chat model
 chat_model_4 = ChatOpenAI(api_key=OPENAI_APIKEY, temperature=0.5, model='gpt-4-turbo-2024-04-09')
 # # load chroma from disk
-vectorstore = Chroma(persist_directory="./exploratory_notebooks/chroma_db", embedding_function=embeddings_model)
+vectorstore = Chroma(persist_directory="./chroma_db/", embedding_function=embeddings_model)
 # Set up the vectorstore to be the retriever
-retriever = vectorstore.as_retriever(k=5)
+retriever = vectorstore.as_retriever(search_kwargs={"k":10})
 # Get pre-written rag prompt
 prompt = hub.pull("rlm/rag-prompt")
 # Format docs function
@@ -26,15 +26,34 @@ def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
 
 # Create RAG Chain
-rag_chain = (
-    {"context": retriever | format_docs, "question": RunnablePassthrough()}
+rag_chain_from_docs = (
+    RunnablePassthrough.assign(context=(lambda x: format_docs(x["context"])))
     | prompt
     | chat_model_4
-    | StrOutputParser())
+    | StrOutputParser()
+)
+
+rag_chain_with_source = RunnableParallel(
+    {"context": retriever, "question": RunnablePassthrough()}
+).assign(answer=rag_chain_from_docs)
+
+# formt results function
+def format_result(result):
+    # context = "\n\n".join((doc.metadata['title'] + '\n' + doc.page_content) for doc in result['context'])
+    titles =  list(set(doc.metadata['title'] for doc in result['context']))
+    titles_string = '\n- '.join(title for title in titles)
+    titles_formatted = f"Relevant Videos: \n- {titles_string}"
+    answer = result['answer']
+    response = f'{answer} \n\n {titles_formatted}'
+
+    return response
+
 
 # Function to generate answer
 def generate_answer(message, history):
-    return rag_chain.invoke(message)
+    result = rag_chain_with_source.invoke(message)
+    formatted_results = format_result(result)
+    return formatted_results
 
 
 answer_bot = gr.ChatInterface(

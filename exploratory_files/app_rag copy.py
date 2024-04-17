@@ -32,8 +32,9 @@ load_dotenv()
 OPENAI_APIKEY = os.environ['OPENAI_APIKEY']
 
 
-# Instantiate models
+# Instantiate embeddings model
 embeddings_model = OpenAIEmbeddings(api_key=OPENAI_APIKEY, model='text-embedding-3-large', max_retries=100, chunk_size=16, show_progress_bar=False)
+# Instantiate chat model
 chat_model_4 = ChatOpenAI(api_key=OPENAI_APIKEY, temperature=0.5, model='gpt-4-turbo-2024-04-09')
 # # load chroma from disk
 vectorstore = Chroma(persist_directory="./exploratory_notebooks/chroma_db", embedding_function=embeddings_model)
@@ -44,6 +45,7 @@ prompt = hub.pull("rlm/rag-prompt")
 # Format docs function
 def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
+
 # Create RAG Chain
 rag_chain = (
     {"context": retriever | format_docs, "question": RunnablePassthrough()}
