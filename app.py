@@ -69,7 +69,7 @@ answer_bot = gr.ChatInterface(
                             chatbot=gr.Chatbot(height=300),
                             textbox=gr.Textbox(placeholder="Ask me a question about nutrition and health", container=False, scale=7),
                             title="Nutrition Facts ChatBot",
-                            description="Ask Dr Michael McGregor's Nutrition Facts videos any questions!",
+                            description="Ask Dr Michael McGregor's Nutrition Facts videos your questions!",
                             theme="soft",
                             examples=["diverticulosis", "heart disease", "low carb diets", "diabetes", "green tea"],
                             cache_examples=False,
