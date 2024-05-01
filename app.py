@@ -11,12 +11,14 @@ from dotenv import load_dotenv
 load_dotenv()
 OPENAI_APIKEY = os.environ['OPENAI_APIKEY']
 
+
+
 # Instantiate embeddings model
 embeddings_model = OpenAIEmbeddings(api_key=OPENAI_APIKEY, model='text-embedding-3-large', max_retries=100, chunk_size=16, show_progress_bar=False)
 # Instantiate chat model
 chat_model_4 = ChatOpenAI(api_key=OPENAI_APIKEY, temperature=0.5, model='gpt-4-turbo-2024-04-09')
 # # load chroma from disk
-vectorstore = Chroma(persist_directory="../chroma_db/", embedding_function=embeddings_model)
+vectorstore = Chroma(persist_directory="./chroma_db/", embedding_function=embeddings_model)
 # Set up the vectorstore to be the retriever
 retriever = vectorstore.as_retriever(search_kwargs={"k":10})
 # Get pre-written rag prompt
