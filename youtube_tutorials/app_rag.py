@@ -37,36 +37,6 @@ rag_chain_with_source = RunnableParallel(
     {"context": retriever, "question": RunnablePassthrough()}
 ).assign(answer=rag_chain_from_docs)
 
-# formt results function
-# def format_result(result):
-#     # context = "\n\n".join((doc.metadata['title'] + '\n' + doc.page_content) for doc in result['context'])
-#     titles =  list(set(doc.metadata['title'] for doc in result['context']))
-#     # video_urls = list(set(doc.metadata['videoId'] for doc in result['context']))
-#     titles_string = '\n- '.join(title for title in titles)
-#     titles_formatted = f"Relevant Videos: \n- {titles_string}"
-#     answer = result['answer']
-#     response = f'{answer} \n\n {titles_formatted}'
-
-#     return response
-
-# def format_result(result):
-#     # Collect unique pairs of titles and video IDs
-#     unique_videos = set((doc.metadata['title'], doc.metadata['videoId']) for doc in result['context'])
-    
-#     # Generate a markdown formatted string with titles as links to their respective YouTube videos
-#     titles_with_links = [
-#         f"[{title}](https://www.youtube.com/watch?v={video_id})" for title, video_id in unique_videos
-#     ]
-    
-#     # Join the formatted titles with markdown list item syntax
-#     titles_string = '\n- '.join(titles_with_links)
-#     titles_formatted = f"Relevant Videos: \n- {titles_string}"
-    
-#     # Prepare the final response string with the answer and the formatted video list
-#     answer = result['answer']
-#     response = f"{answer}\n\n{titles_formatted}"
-
-#     return response
 
 def format_result(result):
     # Extract unique pairs of titles and video IDs from the context

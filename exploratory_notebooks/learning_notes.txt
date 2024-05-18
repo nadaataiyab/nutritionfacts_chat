@@ -1,0 +1,3 @@
+- Learn how to save prompt with output parser as JSON or as a python file
+- Put chains into their own python files or into JSON files
+- 

@@ -18,6 +18,11 @@ chromadb = "*"
 langchainhub = "*"
 gradio = "*"
 langchain-community = "*"
+neo4j = "*"
+langchain-experimental = "*"
+wikipedia = "*"
+xmltodict = "*"
+tavily-python = "*"
 
 [dev-packages]
 
