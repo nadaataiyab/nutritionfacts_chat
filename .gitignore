@@ -4,3 +4,5 @@ chroma.sqlite3
 .txt
 chroma_db/
 exploratory_files/
+exploratory_notebooks/
+demos
